@@ -17,7 +17,7 @@ namespace Empresa.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> getEmpregado()
+        public async Task<ActionResult> getEmpregados()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Empresa.Controllers
                 var result = await empregadoRepository.GetEmpregado(id);
                 if (result == null) return NotFound();
 
-                return result;
+                return Ok(result);
             }
             catch (Exception)
             {
@@ -61,14 +61,15 @@ namespace Empresa.Controllers
             }
         }
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Empregado>> UpdateEmrpegado([FromBody]Empregado empregado)
+        public async Task<ActionResult<Empregado>> UpdateEmpregado(int empId, [FromBody]Empregado empregado)
         {
             try 
             {
-                var result = await empregadoRepository.GetEmpregado(empregado.EmpId);
+                empregado.EmpId = empId;
+                var result = await empregadoRepository.UpdateEmpregado(empregado);
                 if (result == null) return NotFound($"Empregado chamado = {empregado.Nome} não encontrado");
 
-                return await empregadoRepository.UpdateEmpregado(empregado);
+                return Ok(result);
             }
             catch (Exception)
             {

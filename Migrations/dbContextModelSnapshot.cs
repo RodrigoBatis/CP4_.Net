@@ -46,7 +46,7 @@ namespace Empresa.Migrations
 
                     OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmpId"));
 
-                    b.Property<int>("DepartamentoDepId")
+                    b.Property<int>("DepId")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("Email")
@@ -70,20 +70,7 @@ namespace Empresa.Migrations
 
                     b.HasKey("EmpId");
 
-                    b.HasIndex("DepartamentoDepId");
-
                     b.ToTable("Empregados_PX");
-                });
-
-            modelBuilder.Entity("Empresa.Models.Empregado", b =>
-                {
-                    b.HasOne("Empresa.Models.Departamento", "Departamento")
-                        .WithMany()
-                        .HasForeignKey("DepartamentoDepId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Departamento");
                 });
 #pragma warning restore 612, 618
         }

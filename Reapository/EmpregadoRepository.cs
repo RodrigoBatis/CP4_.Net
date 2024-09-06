@@ -41,19 +41,20 @@ namespace Empresa.Reapository
         public async Task<Empregado> UpdateEmpregado(Empregado empregado)
         {
             var result = await dbContext.Empregados.FirstOrDefaultAsync(e => e.EmpId == empregado.EmpId);
-            if (result != null)
+            if (result == null)
             {
-                result.Nome = empregado.Nome;
-                result.Sobrenome = empregado.Sobrenome;
-                result.Genero = empregado.Genero;
-                result.Email = empregado.Email;
-                result.FotoUrl = empregado.FotoUrl;
-
-                await dbContext.SaveChangesAsync();
-
-                return result;
+                return null;
             }
-            return null;
+            result.Nome = empregado.Nome;
+            result.Sobrenome = empregado.Sobrenome;
+            result.Genero = empregado.Genero;
+            result.Email = empregado.Email;
+            result.FotoUrl = empregado.FotoUrl;
+            result.DepId = empregado.DepId;
+
+            await dbContext.SaveChangesAsync();
+            return result;
         }
+
     }
 }

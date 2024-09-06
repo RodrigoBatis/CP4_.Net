@@ -12,7 +12,7 @@ namespace Empresa.Models
         public string Sobrenome { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public Genero Genero { get; set; }
-        public Departamento Departamento { get; set; }
+        public int DepId { get; set; }
 
         public string FotoUrl { get; set; } = string.Empty ;
 

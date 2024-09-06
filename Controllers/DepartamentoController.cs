@@ -19,7 +19,7 @@ namespace Empresa.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> getDepartamento()
+        public async Task<ActionResult> getDepartamentos()
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Empresa.Controllers
                 var result = await departamentoRepository.GetDepartamentoById(id);
                 if (result == null) return NotFound();
 
-                return result;
+                return Ok(result);
             }
             catch (Exception)
             {
@@ -65,14 +65,15 @@ namespace Empresa.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Departamento>> UpdateDepartamento([FromBody] Departamento departamento)
+        public async Task<ActionResult<Departamento>> UpdateDepartamento(int depId, [FromBody] Departamento departamento)
         {
             try
             {
-                var result = await departamentoRepository.GetDepartamentoById(departamento.DepId);
+                departamento.DepId = depId;
+                var result = await departamentoRepository.UpdateDepartamento(departamento);
                 if (result == null) return NotFound($"Departamento chamado = {departamento.DepNome} não encontrado");
 
-                return await departamentoRepository.UpdateDepartamento(departamento);
+                return Ok(result);
             }
             catch (Exception)
             {
@@ -95,6 +96,24 @@ namespace Empresa.Controllers
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao deletar dados no banco de dados");
+            }
+        }
+
+        [HttpGet("empregados/{depId:int}")]
+        public async Task<ActionResult<IEnumerable<Empregado>>> GetEmpregadosByDepartamentoId(int depId)
+        {
+            try
+            {
+                var empregados = await departamentoRepository.GetEmpregadosByDep(depId);
+                if (!empregados.Any()) // Verifica se a lista de empregados está vazia
+                {
+                    return NotFound($"Nenhum empregado encontrado para o departamento ID: {depId}");
+                }
+                return Ok(empregados);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao recuperar dados do banco de dados");
             }
         }
 

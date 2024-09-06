@@ -6,6 +6,7 @@ namespace Empresa.Reapository.Interface
     {
         Task<IEnumerable<Departamento>> GetDepartamentos();
         Task<Departamento> GetDepartamentoById(int depId);
+        Task<IEnumerable<Empregado>> GetEmpregadosByDep(int depId);
         Task<Departamento> AddDepartamento(Departamento departamento);
         Task<Departamento> UpdateDepartamento(Departamento departamento);
         void DeleteDepartamento(int depId);

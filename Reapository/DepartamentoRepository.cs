@@ -46,14 +46,28 @@ namespace Empresa.Reapository
             var result = await dbContext.Departamentos.FirstOrDefaultAsync(e => e.DepId == departamento.DepId);
             if (result != null)
             {
-                result.DepNome = departamento.DepNome;
-                result.DepId = departamento.DepId;
-
-                await dbContext.SaveChangesAsync();
-
-                return result;
+                return null;
             }
-            return null;
+
+            result.DepNome = departamento.DepNome;
+
+            await dbContext.SaveChangesAsync();
+
+            return result;
+
+        }
+
+        public async Task<IEnumerable<Empregado>> GetEmpregadosByDep( int DepId)
+        {
+            var dep = await dbContext.Departamentos.FindAsync(DepId);
+
+            if (dep == null) { 
+                return Enumerable.Empty<Empregado>();
+            }
+
+            return await dbContext.Empregados
+                .Where(e => e.DepId == DepId)
+                .ToListAsync();
         }
     }
 }
